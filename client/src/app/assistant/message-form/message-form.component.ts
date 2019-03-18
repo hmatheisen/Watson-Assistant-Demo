@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import recognizeMicrophone from 'watson-speech/speech-to-text/recognize-microphone';
 
 import { Message, Context, Attachment, Generic } from '@app/models';
 import { AssistantService } from '@app/assistant/services';
+import { SttService } from '@app/assistant/services';
 
 @Component({
   selector: 'app-message-form',
@@ -23,7 +25,7 @@ export class MessageFormComponent implements OnInit {
   @Input()
   labelClicked;
 
-  constructor(private assistantService: AssistantService) {}
+  constructor(private assistantService: AssistantService, private sttService: SttService) {}
 
   ngOnInit() {
     this.message = new Message();
@@ -38,6 +40,11 @@ export class MessageFormComponent implements OnInit {
     this.labelClicked.subscribe((text) => {
       this.onLabelClicked(text);
     });
+
+    this.sttService.getToken().subscribe(token => {
+      recognizeMicrophone(token);
+    });
+
   }
 
 

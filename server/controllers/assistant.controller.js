@@ -10,7 +10,7 @@ class AssistantController {
             },
             context: body.context,
         }
-
+		
         assistant.message(payload, (err, response) => {
             if (err) {
                 res.status(500).send(err);
